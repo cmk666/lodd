@@ -1,2 +1,1 @@
-# luoguoriginaldifficultydisplay
-Luogu original difficulty display
+# Luogu original difficulty display
