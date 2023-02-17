@@ -119,7 +119,6 @@ const get_at_class = d => {
 			ee.children[0].children[0].innerHTML = '原始难度';
 			ele = ee.children[1], ele.innerHTML = '获取中';
 			e.parentNode.insertBefore(ee, e), upd_dif();
-			console.log(e, ee);
 		}
 	});
 	const es = document.createElement('style');
