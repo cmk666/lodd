@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Luogu Original Difficulty Display
-// @version      0.2
+// @version      1.0
 // @description  Luogu original difficulty display
 // @author       cmk666
 // @match        https://www.luogu.com.cn/problem/*
@@ -33,7 +33,7 @@ var dif = undefined, cla = undefined, ele = undefined;
 
 const upd_dif = () => {
 	if ( dif !== undefined && cla !== undefined && ele !== undefined )
-		ele.innerText = dif, ele.classList.add(cla);
+		ele.innerText = dif, cla && ele.classList.add(cla);
 };
 const get_cf_class = d => {
 	if ( d < 1200 ) return 'lodd-cf-gray';
