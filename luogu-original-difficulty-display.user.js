@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Luogu Original Difficulty Display
-// @version      0.1
+// @version      0.2
 // @description  Luogu original difficulty display
 // @author       cmk666
 // @match        https://www.luogu.com.cn/problem/*
@@ -114,7 +114,7 @@ const get_at_class = d => {
 		if ( ele !== undefined ) return;
 		const e = document.querySelector('#app > div.main-container > main > div >' +
 			' section.side > div:nth-child(1) > div > div:nth-child(5)');
-		if ( e !== undefined ) {
+		if ( e !== undefined && e !== null ) {
 			const ee = e.cloneNode(true);
 			ee.children[0].children[0].innerHTML = '原始难度';
 			ele = ee.children[1], ele.innerHTML = '获取中';
