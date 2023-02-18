@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Luogu Original Difficulty Display
-// @version      1.0
+// @version      2.0
 // @description  Luogu original difficulty display
 // @author       cmk666
 // @match        https://www.luogu.com.cn/problem/*
@@ -29,7 +29,7 @@ const style_string = `
 .lodd-at-red { font-weight: bold; color: #ff0000; }
 `;
 
-var dif = undefined, cla = undefined, ele = undefined;
+var dif, cla, ele;
 
 const upd_dif = () => {
 	if ( dif !== undefined && cla !== undefined && ele !== undefined )
@@ -58,7 +58,9 @@ const get_at_class = d => {
 	return '';
 };
 
-(() => {
+const main = () => {
+	dif = cla = ele = undefined;
+	if ( !/^https:\/\/www\.luogu\.com\.cn\/problem\/\w+/.test(location.href) ) return;
 	const url = location.href.substr(33);
 	const rcf = /^CF(\d+)([A-Z]\d*)$/, rat = /^AT_(\w+)$/;
 	var res;
@@ -110,17 +112,29 @@ const get_at_class = d => {
 		});
 	}
 	else return;
-	addEventListener('DOMNodeInserted', () => {
+	const id = setInterval(() => {
 		if ( ele !== undefined ) return;
 		const e = document.querySelector('#app > div.main-container > main > div >' +
-			' section.side > div:nth-child(1) > div > div:nth-child(5)');
+			' section.side > div:nth-child(1) > div > div:nth-child(5) > span:nth-child(1) > span');
 		if ( e !== undefined && e !== null ) {
-			const ee = e.cloneNode(true);
+			const ee = e.parentNode.parentNode.cloneNode(true);
 			ee.children[0].children[0].innerHTML = '原始难度';
 			ele = ee.children[1], ele.innerHTML = '获取中';
-			e.parentNode.insertBefore(ee, e), upd_dif();
+			e.parentNode.parentNode.parentNode.insertBefore(ee, e.parentNode.parentNode);
+			upd_dif(), clearInterval(id);
 		}
-	});
+	}, 100);
 	const es = document.createElement('style');
 	es.innerText = style_string, document.head.appendChild(es);
-})();
+};
+
+const wrapper = t => {
+	const orig = history[t];
+	return function () {
+		const ret = orig.apply(this, arguments);
+		const e = new Event(t);
+		e.arguments = arguments, dispatchEvent(e);
+		return ret;
+	};
+};
+history.pushState = wrapper('pushState'), addEventListener('pushState', main), main();
