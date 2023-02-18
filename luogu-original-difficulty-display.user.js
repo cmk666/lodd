@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Luogu Original Difficulty Display
-// @version      2.0
+// @version      2.1
 // @description  Luogu original difficulty display
 // @author       cmk666
 // @match        https://www.luogu.com.cn/problem/*
@@ -76,7 +76,7 @@ const main = () => {
 					return upd_dif();
 				}
 				for ( var pro of data.result.problems ) if ( pro.index === pid ) {
-					if ( pro.rating === undefined ) dif = '暂无难度', cla = ''; 
+					if ( pro.rating === undefined ) dif = '暂无难度', cla = '';
 					else dif = pro.rating, cla = get_cf_class(pro.rating);
 					return upd_dif();
 				}
@@ -98,12 +98,12 @@ const main = () => {
 				const data = JSON.parse(res.responseText);
 				const pro = data[pid];
 				if ( pro !== undefined ) {
-					if ( pro.difficulty === undefined ) dif = '暂无难度', cla = ''; 
+					if ( pro.difficulty === undefined ) dif = '暂无难度', cla = '';
 					else dif = pro.difficulty, cla = get_at_class(pro.difficulty);
 					return upd_dif();
 				}
 				dif = '获取失败', cla = '';
-				return upd_dif();	
+				return upd_dif();
 			},
 			onerror: () => {
 				dif = '获取失败', cla = '';
@@ -137,4 +137,6 @@ const wrapper = t => {
 		return ret;
 	};
 };
-history.pushState = wrapper('pushState'), addEventListener('pushState', main), main();
+history.pushState = wrapper('pushState');
+addEventListener('pushState', main), addEventListener('popstate', main);
+main();
