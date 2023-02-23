@@ -1,9 +1,9 @@
 // ==UserScript==
 // @name         Luogu Original Difficulty Display
-// @version      2.2
+// @version      2.3
 // @description  Luogu original difficulty display
 // @author       cmk666
-// @match        https://www.luogu.com.cn/*
+// @match        https://www.luogu.com.cn/problem/*
 // @connect      codeforces.com
 // @connect      kenkoooo.com
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=luogu.com.cn
@@ -62,7 +62,7 @@ const main = () => {
 	dif = cla = ele = undefined;
 	if ( !/^https:\/\/www\.luogu\.com\.cn\/problem\/\w+/.test(location.href) ) return;
 	const url = location.href.substr(33);
-	const rcf = /^CF(\d+)([A-Z]\d*)$/, rat = /^AT_(\w+)$/;
+	const rcf = /^CF(\d+)([A-Z]\d*)(#\w+)?$/, rat = /^AT_(\w+)(#\w+)?$/;
 	var res;
 	if ( ( res = rcf.exec(url) ) !== null ) {
 		const cid = res[1], pid = res[2];
