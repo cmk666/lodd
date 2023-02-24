@@ -1,9 +1,9 @@
 // ==UserScript==
 // @name         Luogu Original Difficulty Display
-// @version      2.3
+// @version      2.4
 // @description  Luogu original difficulty display
 // @author       cmk666
-// @match        https://www.luogu.com.cn/problem/*
+// @match        https://www.luogu.com.cn/*
 // @connect      codeforces.com
 // @connect      kenkoooo.com
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=luogu.com.cn
