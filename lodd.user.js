@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Luogu Original Difficulty Display
-// @version      3.0
+// @version      3.1
 // @description  Luogu original difficulty display
 // @author       cmk666
 // @match        https://www.luogu.com.cn/*
@@ -179,5 +179,5 @@ const wrapper = t => {
 history.pushState = wrapper('pushState');
 addEventListener('pushState', main);
 addEventListener('popstate', main);
-addEventListener('ononline', get_element);
+addEventListener('ononline', get_difficulty);
 main();
