@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Luogu Original Difficulty Display
-// @version      3.2
+// @version      3.3
 // @description  Luogu original difficulty display
 // @author       cmk666
 // @match        https://www.luogu.com.cn/*
@@ -70,30 +70,38 @@ const insertAfter = (x, y) => {
 	}
 };
 
+const check_url = () => {
+	if ( /^https:\/\/www\.luogu\.com\.cn\/problem\/\w+/.test(location.href) ) {
+		const url = location.href.substr(33);
+		return /^CF\d+[A-Z]\d*(#\w+)?$/.test(url) || /^AT_\w+(#\w+)?$/.test(url);
+	}
+	return false;
+}
 const get_element = () => {
 	ele = undefined;
-	const id = setInterval(() => {
-		if ( ele === undefined ) {
-			const e = document.querySelector('#app > div.main-container > main > div > section.side > div:nth-child(1) > div > div:nth-child(4) > span:nth-child(1) > span');
-			if ( e !== undefined && e !== null ) {
-				const ee = e.parentNode.parentNode.cloneNode(true);
-				ee.children[0].children[0].innerHTML = '原始难度';
-				ele = ee.children[1];
-				ele.innerHTML = '获取中';
-				insertAfter(ee, e.parentNode.parentNode);
-				upd_dif();
-				clearInterval(id);
+	if ( check_url() ) {
+		const id = setInterval(() => {
+			if ( ele === undefined ) {
+				const e = document.querySelector('#app > div.main-container > main > div > section.side > div:nth-child(1) > div > div:nth-child(4) > span:nth-child(1) > span');
+				if ( e !== undefined && e !== null ) {
+					const ee = e.parentNode.parentNode.cloneNode(true);
+					ee.children[0].children[0].innerHTML = '原始难度';
+					ele = ee.children[1];
+					ele.innerHTML = '获取中';
+					insertAfter(ee, e.parentNode.parentNode);
+					upd_dif();
+					clearInterval(id);
+				}
 			}
-		}
-	}, 100);
+		}, 100);
+	}
 };
 const get_difficulty = () => {
 	dif = cla = undefined;
-	if ( /^https:\/\/www\.luogu\.com\.cn\/problem\/\w+/.test(location.href) ) {
+	if ( check_url() ) {
 		const url = location.href.substr(33);
-		const rcf = /^CF(\d+)([A-Z]\d*)(#\w+)?$/, rat = /^AT_(\w+)(#\w+)?$/;
 		var res;
-		if ( ( res = rcf.exec(url) ) !== null ) {
+		if ( ( res = /^CF(\d+)([A-Z]\d*)(#\w+)?$/.exec(url) ) !== null ) {
 			const cid = res[1], pid = res[2];
 			GM_xmlhttpRequest({
 				method: 'GET',
@@ -131,7 +139,7 @@ const get_difficulty = () => {
 					return;
 				}
 			});
-		} else if ( ( res = rat.exec(url) ) !== null ) {
+		} else if ( ( res = /^AT_(\w+)(#\w+)?$/.exec(url) ) !== null ) {
 			const pid = res[1];
 			GM_xmlhttpRequest({
 				method: 'GET',
