@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Luogu Original Difficulty Display
-// @version      3.1
+// @version      3.2
 // @description  Luogu original difficulty display
 // @author       cmk666
 // @match        https://www.luogu.com.cn/*
@@ -62,17 +62,25 @@ const get_at_class = d => {
 	return '';
 };
 
+const insertAfter = (x, y) => {
+	if ( y.parentNode.lastChild == y ) {
+		y.parentNode.appendChild(x);
+	} else {
+		y.parentNode.insertBefore(x, y.nextSibling);
+	}
+};
+
 const get_element = () => {
 	ele = undefined;
 	const id = setInterval(() => {
 		if ( ele === undefined ) {
-			const e = document.querySelector('#app > div.main-container > main > div > section.side > div:nth-child(1) > div > div:nth-child(5) > span:nth-child(1) > span');
+			const e = document.querySelector('#app > div.main-container > main > div > section.side > div:nth-child(1) > div > div:nth-child(4) > span:nth-child(1) > span');
 			if ( e !== undefined && e !== null ) {
 				const ee = e.parentNode.parentNode.cloneNode(true);
 				ee.children[0].children[0].innerHTML = '原始难度';
 				ele = ee.children[1];
 				ele.innerHTML = '获取中';
-				e.parentNode.parentNode.parentNode.insertBefore(ee, e.parentNode.parentNode);
+				insertAfter(ee, e.parentNode.parentNode);
 				upd_dif();
 				clearInterval(id);
 			}
