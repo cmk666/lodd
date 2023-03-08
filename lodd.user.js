@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Luogu Original Difficulty Display
-// @version      3.3
+// @version      3.4
 // @description  Luogu original difficulty display
 // @author       cmk666
 // @match        https://www.luogu.com.cn/*
@@ -28,6 +28,8 @@ const style_string = `
 .lodd-at-orange { font-weight: bold; color: #ff8000; }
 .lodd-at-red { font-weight: bold; color: #ff0000; }
 `;
+const dif_path = `#app > div.main-container > main > div > section.side > div:nth-child(1) > div > div:nth-child(4) > span:nth-child(1) > span`;
+const orgdif_path = `#app > div.main-container > main > div > section.side > div:nth-child(1) > div > div:nth-child(5) > span:nth-child(1) > span`;
 
 var dif, cla, ele;
 
@@ -82,15 +84,18 @@ const get_element = () => {
 	if ( check_url() ) {
 		const id = setInterval(() => {
 			if ( ele === undefined ) {
-				const e = document.querySelector('#app > div.main-container > main > div > section.side > div:nth-child(1) > div > div:nth-child(4) > span:nth-child(1) > span');
-				if ( e !== undefined && e !== null ) {
-					const ee = e.parentNode.parentNode.cloneNode(true);
-					ee.children[0].children[0].innerHTML = '原始难度';
-					ele = ee.children[1];
-					ele.innerHTML = '获取中';
-					insertAfter(ee, e.parentNode.parentNode);
-					upd_dif();
-					clearInterval(id);
+				const org_e = document.querySelector(orgdif_path);
+				if ( org_e === null || org_e.innerText !== '原始难度' ) {
+					const e = document.querySelector(dif_path);
+					if ( e !== undefined && e !== null ) {
+						const ee = e.parentNode.parentNode.cloneNode(true);
+						ee.children[0].children[0].innerHTML = '原始难度';
+						ele = ee.children[1];
+						ele.innerHTML = '获取中';
+						insertAfter(ee, e.parentNode.parentNode);
+						upd_dif();
+						clearInterval(id);
+					}
 				}
 			}
 		}, 100);
